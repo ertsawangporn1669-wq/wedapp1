@@ -1,0 +1,24 @@
+function closeWebApp() {
+  // 1. กรณีเปิดใน Google Apps Script Web App
+  if (typeof google !== 'undefined' && google.script && google.script.host) {
+    google.script.host.close();
+    return;
+  }
+
+  // 2. กรณีเปิดผ่าน LINE LIFF
+  if (typeof liff !== 'undefined' && liff.isLoggedIn()) {
+    liff.closeWindow();
+    return;
+  }
+
+  // 3. กรณีเว็บเบราว์เซอร์ทั่วไป
+  window.opener = null;
+  window.open('', '_self', '');
+  window.close();
+
+  // 4. หากเบราว์เซอร์ยังบล็อกการปิดหน้าต่าง ให้เปลี่ยนหน้า/แจ้งเตือนแทน
+  setTimeout(function() {
+    alert("ทำรายการเสร็จสิ้น คุณสามารถปิดหน้านี้ได้เลยครับ");
+    // หรือย้ายไปหน้าอื่น เช่น: window.location.href = "about:blank";
+  }, 300);
+}
